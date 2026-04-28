@@ -3,26 +3,45 @@ pipeline {
 
     environment {
         // El canal se define en la configuración global o aquí
-        SLACK_CHANNEL = '#jenkins-notificaciones'
-    }
 
     stages {
         stage('Initialize') {
             steps {
-                slackSend(color: '#FFFF00', message: "🚀 Iniciando Pipeline: ${env.JOB_NAME} (Build #${env.BUILD_NUMBER})")
+                script {
+                    env.PROJECT_NAME = 'Pipeline-Jenkins'
+                    def fecha = new Date().format('yyyy-MM-dd HH:mm:ss')
+                    slackSend channel: '#notificaciones-dev', message: "*${env.PROJECT_NAME}* - Build iniciado :hammer_and_wrench: \nFecha: ${fecha}"
+                }
+                sh 'echo "Ejecutando compilación en Arch Linux..."'
             }
         }
         stage('Build') {
             steps {
-                echo 'Compilando el proyecto...'
+                    bat 'echo Ejecutando compilación en Windows...'
+                    def fecha = new Date().format('yyyy-MM-dd HH:mm:ss')
+                    slackSend channel: '#notificaciones-dev', message: "*${env.PROJECT_NAME}* - Test iniciado :test_tube: \nFecha: ${fecha}"
+                }
+                sh 'true' 
                 sh 'echo "Ejecutando compilación en Arch Linux..."'
             }
         }
         stage('Test') {
-            steps {
+                    bat 'echo Prueba simulada exitosa'
+            script {
+                def fecha = new Date().format('yyyy-MM-dd HH:mm:ss')
+                slackSend channel: '#notificaciones-dev', message: "*${env.PROJECT_NAME}* - Pipeline iniciado :rocket: \nFecha: ${fecha}"
+            }
                 echo 'Ejecutando pruebas unitarias...'
                 // Cambiar a 'false' para probar la notificación de error
+            script {
+                def fecha = new Date().format('yyyy-MM-dd HH:mm:ss')
+                slackSend channel: '#notificaciones-dev', message: "*${env.PROJECT_NAME}* - Éxito :white_check_mark: \nFecha: ${fecha}"
+            }
                 sh 'true' 
+            }
+            script {
+                def fecha = new Date().format('yyyy-MM-dd HH:mm:ss')
+                slackSend channel: '#notificaciones-dev', message: "*${env.PROJECT_NAME}* - Fallo :x: \nFecha: ${fecha}"
             }
         }
     }
