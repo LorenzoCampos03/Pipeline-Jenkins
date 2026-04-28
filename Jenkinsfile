@@ -10,6 +10,7 @@ pipeline {
             steps {
                 script {
                     def fecha = new Date().format('yyyy-MM-dd HH:mm:ss')
+                    slackSend channel: '#notificaciones-dev', message: "*${env.PROJECT_NAME}* - Pipeline iniciado :rocket: \nFecha: ${fecha}"
                     slackSend channel: '#notificaciones-dev', message: "*${env.PROJECT_NAME}* - Build iniciado :hammer_and_wrench: \nFecha: ${fecha}"
                 }
                 bat 'echo Ejecutando compilación en Windows...'
@@ -27,12 +28,6 @@ pipeline {
     }
 
     post {
-        started {
-            script {
-                def fecha = new Date().format('yyyy-MM-dd HH:mm:ss')
-                slackSend channel: '#notificaciones-dev', message: "*${env.PROJECT_NAME}* - Pipeline iniciado :rocket: \nFecha: ${fecha}"
-            }
-        }
         success {
             script {
                 def fecha = new Date().format('yyyy-MM-dd HH:mm:ss')
